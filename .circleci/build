@@ -19,7 +19,7 @@ TANGGAL=$(TZ=Asia/Jakarta date +'%d%m%y')
 START=$(date +"%s")
 export ARCH=arm64
 export KBUILD_BUILD_USER=Mhmmdfas
-export KBUILD_BUILD_HOST=Limited-Realease
+export KBUILD_BUILD_HOST=0128282739173
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 git config --global user.email "fadlyardhians@outlook.com"
