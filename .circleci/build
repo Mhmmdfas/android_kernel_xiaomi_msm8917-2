@@ -87,7 +87,7 @@ function zipping() {
     if [ "$is_test" = true ]; then
         zip -r9 Greenforce-rolex-ALPHA-rolex-"${TANGGAL}".zip *
     else
-        zip -r9 Greenforce-pure-rolex-"${TANGGAL}".zip *
+        zip -r9 Greenforce-Special-rolex-"${TANGGAL}".zip *
     fi
     cd ... #uwow
 }
