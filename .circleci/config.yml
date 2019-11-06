@@ -1,0 +1,14 @@
+version: 2.1
+jobs:
+  compile:
+    docker:
+      - image: mhmmdfas/mydockerimage:latest
+    steps:
+      - run: apt-get -y update && apt-get -y upgrade
+      - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b oreo-pie --depth=1 .
+      - run: bash .circleci/build.sh
+  workflows:
+  version: 2.1
+  cooking:
+    jobs:
+      - compile
