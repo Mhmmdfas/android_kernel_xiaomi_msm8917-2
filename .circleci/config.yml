@@ -6,8 +6,10 @@ jobs:
     steps:
       - run: apt-get -y update && apt-get -y upgrade
       - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b oreo-pie --depth=1 .
-      - run: bash .circleci/build.sh
-  workflows:
+      - run: wget https://raw.githubusercontent.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2/oreo-pie/.circleci/build
+      - run: chmod +x build
+      - run: bash build
+workflows:
   version: 2.1
   cooking:
     jobs:
