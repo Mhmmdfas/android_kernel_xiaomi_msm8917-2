@@ -6,9 +6,9 @@ jobs:
     steps:
       - run: apt-get -y update && apt-get -y upgrade
       - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b oreo-pie --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/scripts-build/master/clangkok
-      - run: chmod +x clangkok
-      - run: bash clangkok
+      - run: wget https://raw.githubusercontent.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2/oreo-pie/awokwok
+      - run: chmod +x awokwok
+      - run: bash awokwok
 workflows:
   version: 2.1
   cooking:
