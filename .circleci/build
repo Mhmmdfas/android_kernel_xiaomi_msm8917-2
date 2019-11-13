@@ -59,7 +59,7 @@ function push() {
 }
 # deldog
 function deldog() {
-	cat build.log | curl -F 'deldog=<-' https://del.dog > link
+	cat build.log | curl -F 'sprunge=<-' https://sprunge.us > link
 	HASIL="$(cat link)"
 }
 # Fin Error
