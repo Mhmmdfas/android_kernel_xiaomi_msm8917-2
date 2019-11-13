@@ -55,7 +55,12 @@ function push() {
 			-F chat_id="${chat_id}" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
-			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ] %0A <b>Logs</b> <a href='${HASIL}'>here</a>"
+}
+# deldog
+function deldog() {
+	cat build.log | curl -F 'deldog=<-' https://del.dog > link
+	HASIL="$(cat link)"
 }
 # Fin Error
 function finerr() {
@@ -77,9 +82,11 @@ function compile() {
         UTS=$(cat out/include/generated/compile.h | grep UTS_VERSION | cut -d '"' -f2)
             if ! [ -a $IMAGE ]; then
                 finerr
+		deldog
                 exit 1
             fi
         cp out/arch/arm64/boot/Image.gz-dtb anykernel3/zImage
+	deldog
         paste
 }
 # Zipping
@@ -97,6 +104,7 @@ sticker
 sendinfo
 sendpriv
 compile
+deldog
 zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
