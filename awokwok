@@ -114,7 +114,7 @@ function compile() {
 # Zipping
 function zipping() {
     cd ${ZIPNAME} || exit 1
-    zip -r9q ${NAME}-${TYPE}-${CODENAME}-"${TANGGAL}".zip * -x .git README.md
+    zip -r9q ${NAME}-${TYPE}-${CODENAME}-${TANGGAL}.zip * -x .git README.md
     cd ... #uwow
 }
 rm -rf out
@@ -126,3 +126,4 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
+# End build
