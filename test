@@ -122,7 +122,7 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="I'M Sorry My Master! Build error(s) | 📌 <a href='${LOGERR}'>Logs</a>"
+			-d text="Build throw an error(s) | <b>Build logs</b> <a href='${LOGGER}'>here</a>"
         exit 1
 }
 # Push Kernel
@@ -133,7 +133,7 @@ function testprivv() {
 			-F chat_id="${DEV_ID}" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
-			-F caption="🥙: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s) %0A📱: <code>Xiaomi Redmi 4A</code> %0A📲 :<code>$UTS</code>"
+			-F caption="🥙: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s)%0A📱: <code>Xiaomi Redmi 4A</code>%0A📲 :<code>$UTS</code>"
 }
 # Compile kernel
 function compile() {
