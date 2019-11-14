@@ -11,6 +11,7 @@ echo "Let's Start It!"
 
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+DEV="https://t.me/Mhmmdfas"
 STICKER="CAADBQADPwEAAn1Cwy4LGnCzWtePdRYE"
 NAME="GREENFORCE"
 MACHINE="Circle CI/CD"
@@ -23,8 +24,8 @@ ZIPNAME="anykernel3"
 FCLANG="clang"
 FGCC="aarch64"
 FARM="arm32"
-JOBS="-j32"
-LOAD="-l32"
+JOBS="-j50"
+LOAD="-l60"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
 ZIPLINK="https://github.com/Mhmmdfas/anykernel3"
@@ -72,7 +73,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="${NAME} new build for ${CODENAME}!%0A⏰: <code>$(TZ=Asia/Jakarta date)</code> ]%0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
+                        -d text="${NAME} new build for ${CODENAME}!%0A😎: <a href='${DEV}'>Mhmmdfas</a> %0A⏰: <code>$(TZ=Asia/Jakarta date)</code> %0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
 }
 # Push Kernel
 function push() {
