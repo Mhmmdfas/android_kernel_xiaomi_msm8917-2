@@ -108,7 +108,7 @@ function testprivv() {
         cd ${ZIPDIR}
 	ZIP=$(echo *.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
-			-F chat_id="${DEV_ID}" \
+			-F chat_id=784548477 \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
 			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
@@ -121,7 +121,13 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="Build throw an error(s). | Build logs <a href='${LOGERR}'>here</a>"
+			-d text="OH My MASTERS i'm sorry, build done with error 😥 " \
+			                echo "push log into my telegram"
+       curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+            -d chat_id=784548477 \
+			-d "disable_web_page_preview=true" \
+            -d "parse_mode=markdown" \
+            -d text="Build done with error%0A📱: <code>Xiaomi Redmi 4A</code> %0A🖇️: ${LOGERR}"
         exit 1
 }
 # Compile kernel
