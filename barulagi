@@ -25,6 +25,9 @@ echo "L"
             echo "I"
              echo "T"
 
+#Main Environment
+NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
+TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 DEV="https://t.me/Mhmmdfas"
 STICKER="CAADBQADPwEAAn1Cwy4LGnCzWtePdRYE"
@@ -35,6 +38,13 @@ CODENAME="rolex"
 OS="8.1-9.0 (oreo-pie)"
 CONFIG="rolexx_defconfig"
 TYPE="CAF"
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
+
+#Toolchains Option
+HEAD_CLANG="daily/10.0 "
+HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
+HEAD_GCC32="non-elf/gcc-10.0.0/arm"
 ZIPNAME="anykernel3"
 FCLANG="clang"
 FGCC="aarch64"
@@ -42,24 +52,30 @@ FARM="arm32"
 JOBS="-j50"
 LOAD="-l60"
 EXTRA="--depth=1"
-BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
+
+#Material's of GREENFORCE kernel
 ZIPLINK="https://github.com/Mhmmdfas/anykernel3"
 CLANGLINK="https://github.com/NusantaraDevs/DragonTC"
 GCC64="https://github.com/najahiiii/priv-toolchains"
 GCC32="https://github.com/najahiiii/priv-toolchains"
-HEAD_CLANG="daily/10.0 "
-HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
-HEAD_GCC32="non-elf/gcc-10.0.0/arm"
-NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
-TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
+
+#Prefixx Toolchains
+TC_CLANG="clang"
+TC_GCC64="aarch64-linux-gnu-"
+TC_GCC32="arm-linux-gnueabi-"
+
+#Clone The Material's
 git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
 git clone ${JOBS} ${GCC64} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
 git clone ${JOBS} ${GCC32} -b ${HEAD_GCC32} ${EXTRA} ${FARM}
 git clone ${JOBS} ${ZIPLINK} -b ${CODENAME} ${EXTRA} ${ZIPNAME}
-CT="$(pwd)/clang/bin/clang"
-GCC_64="$(pwd)/aarch64/bin/aarch64-linux-gnu-"
-GCC_32="$(pwd)/arm32/bin/arm-linux-gnueabi-"
+
+#Compile Side
+CT="$(pwd)/${FCLANG}/bin/${TC_CLANG}"
+GCC_64="$(pwd)/${FGCC}/bin/${TC_GCC64}"
+GCC_32="$(pwd)/${FARM}/bin/${TC_GCC32}"
+
+#Export Side
 DEV_ID="784548477"
 export ARCH=arm64
 export KBUILD_BUILD_USER=Mhmmdfas
@@ -67,6 +83,7 @@ export KBUILD_BUILD_HOST=Greenforce-HMP
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 START=$(date +"%s")
+#Time To Compile ..
 # Take error log
 function logerr() {
     cat build.log | curl -F 'sprunge=<-' http://sprunge.us > link
