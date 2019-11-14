@@ -92,7 +92,7 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="<i>Build done with error</i> <b>Build logs</b> <a href='${LOGERR}'>here</a>" "
+			-d text="<i>Build done with error</i> <b>Build logs</b> <a href='${LOGERR}'>here</a>"
         exit 1
 }
 # Compile kernel
