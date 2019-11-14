@@ -56,7 +56,7 @@ TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
 git clone ${JOBS} ${GCC64} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
 git clone ${JOBS} ${GCC32} -b ${HEAD_GCC32} ${EXTRA} ${FARM}
-git clone ${JOBS} ${ZIPLINK} --depth=1 -b ${CODENAME} ${ZIPNAME}
+git clone ${JOBS} ${ZIPLINK} -b ${CODENAME} ${EXTRA} ${ZIPNAME}
 CT="$(pwd)/clang/bin/clang"
 GCC_64="$(pwd)/aarch64/bin/aarch64-linux-gnu-"
 GCC_32="$(pwd)/arm32/bin/arm-linux-gnueabi-"
@@ -121,7 +121,7 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="Build throw an error(s). [ Build logs <a href='${LOGERR}'>here</a> ]"
+			-d text="Build throw an error(s). | Build logs <a href='${LOGERR}'>here</a>"
         exit 1
 }
 # Compile kernel
