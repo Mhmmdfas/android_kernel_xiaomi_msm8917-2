@@ -49,8 +49,8 @@ CLANGLINK="https://github.com/NusantaraDevs/DragonTC"
 GCC64="https://github.com/najahiiii/priv-toolchains"
 GCC32="https://github.com/najahiiii/priv-toolchains"
 HEAD_CLANG="daily/10.0 "
-HEADG_CC64="non-elf/gcc-10.0.0/arm64"
-HEADG_CC32="non-elf/gcc-10.0.0/arm"
+HEADG_GCC64="non-elf/gcc-10.0.0/arm64"
+HEADG_GCC32="non-elf/gcc-10.0.0/arm"
 git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
 git clone ${JOBS} ${GCC64} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
 git clone ${JOBS} ${GCC32} -b ${EXTRA} ${HEAD_GCC32} ${FARM}
