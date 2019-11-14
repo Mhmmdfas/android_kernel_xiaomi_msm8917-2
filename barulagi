@@ -60,6 +60,7 @@ git clone ${JOBS} ${ZIPLINK} -b ${CODENAME} ${EXTRA} ${ZIPNAME}
 CT="$(pwd)/clang/bin/clang"
 GCC_64="$(pwd)/aarch64/bin/aarch64-linux-gnu-"
 GCC_32="$(pwd)/arm32/bin/arm-linux-gnueabi-"
+DEV_ID="784548477"
 export ARCH=arm64
 export KBUILD_BUILD_USER=Mhmmdfas
 export KBUILD_BUILD_HOST=Greenforce-HMP
@@ -88,7 +89,7 @@ function sendinfo() {
 # Send private status
 function sendpriv() {
         curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
-                        -d chat_id=784548477 \
+                        -d chat_id=${DEV_ID} \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
                         -d text="${NAME} new build for ${CODENAME}!%0A😎: <a href='${DEV}'>Mhmmdfas</a> %0A⏰: <code>$(TZ=Asia/Jakarta date)</code> %0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
@@ -108,7 +109,7 @@ function testprivv() {
         cd ${ZIPDIR}
 	ZIP=$(echo *.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
-			-F chat_id=784548477 \
+			-F chat_id=${DEV_ID} \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
 			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
@@ -121,13 +122,13 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="OH My MASTERS i'm sorry, build done with error 😥 " \
-			                echo "push log into my telegram"
+			-d text="Build done with error(s). ~> see logs in secret chat!" \
+			                echo "push log into my telegram account"
        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
-            -d chat_id=784548477 \
+            -d chat_id=${DEV_ID} \
 			-d "disable_web_page_preview=true" \
             -d "parse_mode=markdown" \
-            -d text="Build done with error%0A📱: <code>Xiaomi Redmi 4A</code> %0A🖇️: ${LOGERR}"
+            -d text=" BUILD DONE WITH ERROR(S).%0A📱: Xiaomi Redmi 4A %0A🖇️: ${LOGERR}%0AOK! GOOD LUCK 😁"
         exit 1
 }
 # Compile kernel
