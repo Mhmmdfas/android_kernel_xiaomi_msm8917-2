@@ -25,18 +25,15 @@ echo "L"
             echo "I"
              echo "T"
             
-#SetupEnvironment###########################################
 JOBS="-j50"
 LOAD="-l60"
 EXTRA="--depth=1"
-IMAGE="$(pwd)/arch/arm64/boot/Image.gz-dtb"
-IMAGE_OUT="$(pwd)/out/arch/arm64/boot/Image.gz-dtb"
+IMAGE="$(pwd)/out/arch/arm64/boot/Image.gz-dtb"
 STICKER="CAADBQADPwEAAn1Cwy4LGnCzWtePdRYE"
 NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
 TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
-#Telegram###########################################
 DEV="https://t.me/Mhmmdfas"
 DEV_ID="784548477"
 NAME="GREENFORCE"
@@ -46,7 +43,6 @@ CODENAME="rolex"
 OS="8.1-9.0 (oreo-pie)"
 CONFIG="rolex_defconfig"
 TYPE="CAF"
-#ToolchainSide###########################################
 FCLANG="clang"
 FGCC="aarch64"
 FARM="arm32"
@@ -58,29 +54,23 @@ GCC32="https://github.com/najahiiii/priv-toolchains"
 HEAD_CLANG="daily/10.0 "
 HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
 HEAD_GCC32="non-elf/gcc-10.0.0/arm"
-#CloneToolchains###########################################
 git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
 git clone ${JOBS} ${GCC64} -b ${hhhbi4} ${EXTRA} ${FGCC}
-git clone ${JOBS} ${GCC32} -b ${H} ${EXTRA} ${FARM}
+git clone ${JOBS} ${GCC32} -b ${HEAD_GCC32} ${EXTRA} ${FARM}
 git clone ${JOBS} ${ZIPLINK} -b ${CODENAME} ${EXTRA} ${ZIPDIR}
-#echo "clone success"
 CT="$(pwd)/clang/bin/clang"
 GCC_64="$(pwd)/aarch64/bin/aarch64-linux-gnu-"
 GCC_32="$(pwd)/arm32/bin/arm-linux-gnueabi-"
-#ExportSide###########################################
 export ARCH=arm64
 export KBUILD_BUILD_USER=Mhmmdfas
 export KBUILD_BUILD_HOST=Greenforce-HMP
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 START=$(date +"%s")
-# Build starts here
-# =================
-echo -e "> Opening .config file...\n"
-# Take Error Log
+# Take error log
 function logerr() {
     cat build.log | curl -F 'sprunge=<-' http://sprunge.us > link
-    LOGERR="$(cat link)"
+    RESULT="$(cat link)"
 }
 # send sticker
 function sticker() {
@@ -122,7 +112,7 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="Build throw an error(s) | <b>Build logs</b> <a href='${LOGERR}'>here</a>"
+			-d text="Build throw an error(s) | <b>Build logs</b> <a href='${RESULT}'>here</a>"
         exit 1
 }
 # Push Kernel
@@ -147,7 +137,7 @@ function compile() {
                 finerr
                 exit 1
             fi
-        cp ${IMAGE_OUT} ${ZIPDIR}/zImage
+        cp out/arch/arm64/boot/Image.gz-dtb ${ZIPDIR}/zImage
         logerr
         paste
 }
