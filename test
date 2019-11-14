@@ -2,7 +2,7 @@
 # Copyright (C) 2019 2019 Muhammad Fadlyas! (@Mhmmdfas)
 # For Xiaomi Redmi 4A & Xiaomi Redmi 5A
 # Circle CI/CD Scripts
-#
+# Continues Integration
 #
 
 
@@ -20,7 +20,7 @@ echo "L"
            echo " "
             echo "I"
              echo "T"
-
+             
 
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 STICKER="CAADBQADPwEAAn1Cwy4LGnCzWtePdRYE"
@@ -49,12 +49,12 @@ CLANGLINK="https://github.com/NusantaraDevs/DragonTC"
 GCC64="https://github.com/najahiiii/priv-toolchains"
 GCC32="https://github.com/najahiiii/priv-toolchains"
 HEAD_CLANG="daily/10.0 "
-HEADG_GCC64="non-elf/gcc-10.0.0/arm64"
-HEADG_GCC32="non-elf/gcc-10.0.0/arm"
+HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
+HEAD_GCC32="non-elf/gcc-10.0.0/arm"
 git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
 git clone ${JOBS} ${GCC64} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
-git clone ${JOBS} ${GCC32} -b ${EXTRA} ${HEAD_GCC32} ${FARM}
-git clone ${JOBS} ${ZIPLINK} ${EXTRA} -b ${CODENAME} ${ZIPNAME}
+git clone ${JOBS} ${GCC32} -b ${HEAD_GCC32} ${EXTRA} ${FARM}
+git clone ${JOBS} ${ZIPLINK} -b ${CODENAME} ${EXTRA} ${ZIPNAME}
 CT="$(pwd)/clang/bin/clang"
 GCC_64="$(pwd)/aarch64/bin/aarch64-linux-gnu-"
 GCC_32="$(pwd)/arm32/bin/arm-linux-gnueabi-"
@@ -109,7 +109,7 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="<i>Build done with error(s)</i> <b>Build logs</b> <a href='${LOGERR}'>here</a>"
+			-d text="I'M Sorry My Master! Build error(s) <a href='${LOGERR}'>Logs</a>"
         exit 1
 }
 # Push Kernel
@@ -117,7 +117,7 @@ function testprivv() {
         cd ${ZIPNAME}
 	ZIP=$(echo *.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
-			-F chat_id="${chat_id}" \
+			-F chat_id="784548477" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
 			-F caption="🥙: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s) %0A📱: <code>Xiaomi Redmi 4A</code> %0A📲 :<code>$UTS</code> %0A📌 <a href='${LOGERR}'>here</a>"
