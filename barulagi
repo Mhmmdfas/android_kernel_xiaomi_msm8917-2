@@ -36,15 +36,12 @@ MACHINE="Circle CI/CD"
 DEVICES="Xiaomi Redmi 4A/5A"
 CODENAME="rolex"
 OS="8.1-9.0 (oreo-pie)"
-CONFIG="rolexx_defconfig"
+CONFIG="rolex_defconfig"
 TYPE="CAF"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
 
 #Toolchains Option
-HEAD_CLANG="daily/10.0 "
-HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
-HEAD_GCC32="non-elf/gcc-10.0.0/arm"
 ZIPNAME="anykernel3"
 FCLANG="clang"
 FGCC="aarch64"
@@ -58,6 +55,9 @@ ZIPLINK="https://github.com/Mhmmdfas/anykernel3"
 CLANGLINK="https://github.com/NusantaraDevs/DragonTC"
 GCC64="https://github.com/najahiiii/priv-toolchains"
 GCC32="https://github.com/najahiiii/priv-toolchains"
+HEAD_CLANG="daily/10.0 "
+HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
+HEAD_GCC32="non-elf/gcc-10.0.0/arm"
 
 #Prefixx Toolchains
 TC_CLANG="clang"
@@ -83,7 +83,9 @@ export KBUILD_BUILD_HOST=Greenforce-HMP
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 START=$(date +"%s")
-#Time To Compile ..
+#Build starts here
+# =================
+echo -e "> Opening .config file...\n"
 # Take error log
 function logerr() {
     cat build.log | curl -F 'sprunge=<-' http://sprunge.us > link
@@ -164,11 +166,18 @@ function compile() {
         logerr
         paste
 }
+# Clean My Build
+function cleanbuild() {
+    rm -rf ${ZIPNAME} 
+    rm -rf ${FCLANG}
+    rm -rf ${FGCC}
+    rm -rf ${FARM}
+}
 # Zipping
 function zipping() {
     cd ${ZIPNAME} || exit 1
     zip -r9q ${NAME}-${TYPE}-${CODENAME}-${TANGGAL}.zip * -x .git README.md
-    cd ... #uwow
+    cd ...
 }
 rm -rf out
 sticker
@@ -180,4 +189,5 @@ END=$(date +"%s")
 DIFF=$(($END - $START))
 testprivv
 push
+cleanbuild
 # End build
