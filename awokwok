@@ -29,13 +29,14 @@ function dogbin() {
 }
 # Sprunge
 function sprunge() {
-    cat build.log | curl -F 'sprunge=<-' http://sprunge.us > link
+    cat build.log | curl -F 'del.dog=<-' https://del.dog/ > link
     HASIL="$(cat link)"
 }
 
 # Fin Error
 function finerr() {
         dogbin
+        sprunge
         curl -s -X POST https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id} -d "disable_web_page_preview=true" -d "parse_mode=html&text=Build throw an error(s) | <b>Build logs</b> <a href='${log}'>here</a>"
         exit 1
 }
@@ -46,6 +47,7 @@ if ! [ -a $IMAGE ]; then
 	exit 1
 fi
 cp out/arch/arm64/boot/Image.gz-dtb anykernel3/zImage
+sprunge
 dogbin
 cd anykernel3
 zip -r9 perf-${tanggal}.zip *
