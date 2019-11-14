@@ -1,0 +1,159 @@
+#!bin/bash
+# Copyright (C) 2019 Muhammad Fadlyas! (@Mhmmdfas)
+# For Xiaomi Redmi 4A & Xiaomi Redmi 5A
+# Circle CI/CD Scripts
+# Continues Integration
+#
+
+clear
+echo "#########################################"
+echo "### GREENFORCE Kernel - DRAGON TC Build Script ###"
+echo "#########################################"
+
+echo "L"
+ echo "E"
+  echo "T"
+   echo "'"
+    echo "S"
+     echo " "
+      echo "S"
+       echo "T"
+        echo "A"
+         echo "R"
+          echo "T"
+           echo " "
+            echo "I"
+             echo "T"
+
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+DEV="https://t.me/Mhmmdfas"
+STICKER="CAADBQADPwEAAn1Cwy4LGnCzWtePdRYE"
+NAME="GREENFORCE"
+MACHINE="Circle CI/CD"
+DEVICES="Xiaomi Redmi 4A/5A"
+CODENAME="rolex"
+OS="8.1-9.0 (oreo-pie)"
+CONFIG="rolexx_defconfig"
+TYPE="CAF"
+ZIPNAME="anykernel3"
+FCLANG="clang"
+FGCC="aarch64"
+FARM="arm32"
+JOBS="-j50"
+LOAD="-l60"
+EXTRA="--depth=1"
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
+ZIPLINK="https://github.com/Mhmmdfas/anykernel3"
+CLANGLINK="https://github.com/NusantaraDevs/DragonTC"
+GCC64="https://github.com/najahiiii/priv-toolchains"
+GCC32="https://github.com/najahiiii/priv-toolchains"
+HEAD_CLANG="daily/10.0 "
+HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
+HEAD_GCC32="non-elf/gcc-10.0.0/arm"
+NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
+TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
+git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
+git clone ${JOBS} ${GCC64} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
+git clone ${JOBS} ${GCC32} -b ${HEAD_GCC32} ${EXTRA} ${FARM}
+git clone ${JOBS} ${ZIPLINK} --depth=1 -b ${CODENAME} ${ZIPNAME}
+CT="$(pwd)/clang/bin/clang"
+GCC_64="$(pwd)/aarch64/bin/aarch64-linux-gnu-"
+GCC_32="$(pwd)/arm32/bin/arm-linux-gnueabi-"
+export ARCH=arm64
+export KBUILD_BUILD_USER=Mhmmdfas
+export KBUILD_BUILD_HOST=Greenforce-HMP
+export USE_CCACHE=1
+export CACHE_DIR=~/.ccache
+START=$(date +"%s")
+# Take error log
+function logerr() {
+    cat build.log | curl -F 'sprunge=<-' http://sprunge.us > link
+    LOGERR="$(cat link)"
+}
+# send sticker
+function sticker() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendSticker" \
+                        -d sticker="${STICKER}" \
+                        -d chat_id=${chat_id}
+}
+# Send status
+function sendinfo() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+                        -d chat_id=${chat_id} \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="<b>${NAME} kernel new build is up</b>!!%0AStarted on <code>${MACHINE}</code> %0AFor devices: <code>${DEVICES}</code> %0AFor Android: <code>${OS}</code> %0AFrom branch: <code>${BRANCH}</code> %0ALatest Commit <code>${COMMIT}</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC_64}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC_32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>"
+}
+# Send private status
+function sendpriv() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+                        -d chat_id=784548477 \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="${NAME} new build for ${CODENAME}!%0A😎: <a href='${DEV}'>Mhmmdfas</a> %0A⏰: <code>$(TZ=Asia/Jakarta date)</code> %0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
+}
+# Push Kernel
+function push() {
+        cd ${ZIPNAME}
+	ZIP=$(echo *.zip)
+	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
+			-F chat_id="${chat_id}" \
+			-F "disable_web_page_preview=true" \
+			-F "parse_mode=html" \
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
+}
+# Push Kernel into my telegram
+function testprivv() {
+        cd ${ZIPDIR}
+	ZIP=$(echo *.zip)
+	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
+			-F chat_id="${DEV_ID}" \
+			-F "disable_web_page_preview=true" \
+			-F "parse_mode=html" \
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
+}
+# Fin Error
+function finerr() {
+        logerr
+        paste
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+			-d chat_id="${chat_id}" \
+			-d "disable_web_page_preview=true" \
+			-d "parse_mode=markdown" \
+			-d text="Build done with error <b>Build logs</b> <a href='${LOGERR}'>here</a>"
+        exit 1
+}
+# Compile kernel
+function compile() {
+        make -s -C $(pwd) O=out ${CONFIG}
+        make -s -C $(pwd) CC=${CT} \
+			  CROSS_COMPILE=${GCC_64} \
+                          CROSS_COMPILE_ARM32=${GCC_32} \
+                          O=out ${JOBS} ${LOAD} 2>&1| tee build.log
+        UTS=$(cat out/include/generated/compile.h | grep UTS_VERSION | cut -d '"' -f2)
+            if ! [ -a $IMAGE ]; then
+                finerr
+                exit 1
+            fi
+        cp out/arch/arm64/boot/Image.gz-dtb anykernel3/zImage
+        logerr
+        paste
+}
+# Zipping
+function zipping() {
+    cd ${ZIPNAME} || exit 1
+    zip -r9q ${NAME}-${TYPE}-${CODENAME}-${TANGGAL}.zip * -x .git README.md
+    cd ... #uwow
+}
+rm -rf out
+sticker
+sendinfo
+sendpriv
+compile
+zipping
+END=$(date +"%s")
+DIFF=$(($END - $START))
+testprivv
+push
+# End build
