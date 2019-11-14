@@ -54,7 +54,7 @@ HEAD_GCC32="non-elf/gcc-10.0.0/arm"
 NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
 TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
-git clone ${JOBS} ${GCC64} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
+git clone ${JOBS} ${GCC6h4} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
 git clone ${JOBS} ${GCC32} -b ${HEAD_GCC32} ${EXTRA} ${FARM}
 git clone ${JOBS} ${ZIPLINK} --depth=1 -b ${CODENAME} ${ZIPNAME}
 CT="$(pwd)/clang/bin/clang"
@@ -91,7 +91,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="${NAME} new build for ${CODENAME}!%0A😎: <a href='${DEV}'>Mhmmdfas</a> %0A⏰: <code>$(TZ=Asia/Jakarta date)</code> %0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
+                        -d text="${NAME} new build for ${CODENAME}!%0A⏰: <code>$(TZ=Asia/Jakarta date)</code> %0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
 }
 # Push Kernel
 function push() {
@@ -121,7 +121,7 @@ function finerr() {
 			-d chat_id="${chat_id}" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="Build throw an error(s). [ Build logs <a href='${LOGERR}'>here</a> ]"
+			-d text="Build throw an error(s).[ Build logs <a href='${LOGERR}'>here</a> ]"
         exit 1
 }
 # Compile kernel
