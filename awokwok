@@ -1,60 +1,128 @@
 #!bin/bash
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-git clone --quiet -j32 https://github.com/crDroidMod/android_prebuilts_clang_host_linux-x86_clang-5058415 -b 9.0 --depth=1 clang
-git clone --quiet -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-9.0.0_r49 --depth=1 aarch64
-git clone --quiet -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-9.0.0_r49 --depth=1 arm32
-git clone --quiet -j32 https://github.com/Mhmmdfas/anykernel3 --depth=1 -b rolex anykernel3 && rm -rf any*/READ
+# Copyright (C) 2019 Ahmad Thoriq Najahi (@najahiiii)
+# Modified (M) 2019 Muhammad Fadlyas! (@Mhmmdfas)
+# For Xiaomi Redmi 4A/5A
+# For Android 8.1 & 9.0
+# Circle CI/CD
+#
 
+
+echo "Let's Start It!"
+
+
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+STICKER="CAADBQADPwEAAn1Cwy4LGnCzWtePdRYE"
+NAME="GREENFORCE"
+MACHINE="Circle CI/CD"
+DEVICES="Xiaomi Redmi 4A/5A"
+CODENAME="rolex"
+OS="8.1-9.0 (oreo-pie)"
+CONFIG="rolex_defconfig"
+TYPE="CAF"
+ZIPNAME="anykernel3"
+FCLANG="clang"
+FGCC="aarch64"
+FARM="arm32"
+JOBS="-j32"
+LOAD="-l32"
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
+ZIPLINK="https://github.com/Mhmmdfas/anykernel3"
+CLANGLINK="https://github.com/NusantaraDevs/DragonTC"
+GCC64="https://github.com/najahiiii/priv-toolchains"
+GCC32="https://github.com/najahiiii/priv-toolchains"
+NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
+SHA=$(echo "$CIRCLE_SHA1" | cut -c 1-8)
+TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
+git clone ${JOBS} ${CLANGLINK} -b daily/10.0 --depth=1 ${FCLANG}
+git clone ${JOBS} ${GCC64} -b non-elf/gcc-10.0.0/arm64 --depth=1 ${FGCC}
+git clone ${JOBS} ${GCC32} -b non-elf/gcc-10.0.0/arm --depth=1 ${FARM}
+git clone ${JOBS} ${ZIPLINK} --depth=1 -b ${CODENAME} ${ZIPNAME}
 CT="$(pwd)/clang/bin/clang"
-GCC="$(pwd)/aarch64/bin/aarch64-linux-android-"
-GCCARM="$(pwd)/arm32/bin/arm-linux-androideabi-"
-curl -s -F chat_id=${chat_id} -F sticker="CAADBQADJAEAAn1Cwy6oClWEDGYAAQEWBA" https://api.telegram.org/bot${token}/sendSticker
-curl -s -X POST https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id} -d "disable_web_page_preview=true" -d "parse_mode=html&text=<b>// winxkernel //</b>%0ACompile Started"'!'"%0A<b>For device</b> <code>RIVA (Redmi 5A)</code>%0A<b>For Oreo/Pie</b>%0A<b>Under Commit</b> <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>Compiler</b> <code>$(${GCC}gcc --version | head -n 1)</code>%0A<b>Compiler</b> <code>$(${GCCARM}gcc --version | head -n 1)</code>%0A<b>Clang</b> <code>$(${CT} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0A<b>Started on</b> <code>$(date)</code>%0A<b>Build Status:</b> #untested"
-tanggal=$(date +'%H%M-%d%m%y')
-START=$(date +"%s")
+GCC_64="$(pwd)/aarch64/bin/aarch64-linux-gnu-"
+GCC_32="$(pwd)/arm32/bin/arm-linux-gnueabi-"
 export ARCH=arm64
-export KBUILD_BUILD_USER=zantrash
-export KBUILD_BUILD_HOST=Base77
+export KBUILD_BUILD_USER=Mhmmdfas
+export KBUILD_BUILD_HOST=Greenforce-HMP
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
-
-# log
-function dogbin() {
-    # var=$(php -r "echo file_get_contents('$1');")
-    var="$(cat $1)"
-    content=$(curl -sf --data-binary "$var" https://del.dog/documents)
-    file=$(jq -r .key <<< $content)
-    log="https://del.dog/$file"
-    echo "URL is: "$log" "
+START=$(date +"%s")
+# Take Error Log
+function logerr() {
+    cat build.log | curl -F 'sprunge=<-' http://sprunge.us > link
+    LOGERR="$(cat link)"
 }
-# Sprunge
-function sprunge() {
-    cat build.log | curl -F 'del.dog=<-' https://del.dog/ > link
-    HASIL="$(cat link)"
+# send sticker
+function sticker() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendSticker" \
+                        -d sticker="${STICKER}" \
+                        -d chat_id=${chat_id}
 }
-
+# Send status
+function sendinfo() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+                        -d chat_id=${chat_id} \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="<b>${NAME} kernel new build is up</b>!!%0AStarted on <code>${MACHINE}</code> %0AFor devices: <code>${DEVICES}</code> %0AFor Android: <code>${OS}</code> %0AFrom branch: <code>${BRANCH}</code> %0ALatest Commit <code>${COMMIT}</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC_64}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC_32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>"
+}
+# Send private status
+function sendpriv() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+                        -d chat_id=784548477 \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="${NAME} new build for ${CODENAME}!%0A⏰: <code>$(TZ=Asia/Jakarta date)</code> ]%0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
+}
+# Push Kernel
+function push() {
+        cd ${ZIPNAME}
+	ZIP=$(echo *.zip)
+	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
+			-F chat_id="${chat_id}" \
+			-F "disable_web_page_preview=true" \
+			-F "parse_mode=html" \
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
+}
 # Fin Error
 function finerr() {
-        dogbin
-        sprunge
-        curl -s -X POST https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id} -d "disable_web_page_preview=true" -d "parse_mode=html&text=Build throw an error(s) | <b>Build logs</b> <a href='${log}'>here</a>"
+        logerr
+        paste
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+			-d chat_id="${chat_id}" \
+			-d "disable_web_page_preview=true" \
+			-d "parse_mode=markdown" \
+			-d text="<i>Build done with error</i> <b>Build logs</b> <a href='${LOGERR}'>here</a>" "
         exit 1
 }
-make -s -C $(pwd) O=out rolex_defconfig
-make -s -C $(pwd) CC=${CT} CROSS_COMPILE_ARM32=${GCCARM} CROSS_COMPILE=${GCC} O=out -j32 -l12 2>&1| tee build.log
-if ! [ -a $IMAGE ]; then
-	finerr
-	exit 1
-fi
-cp out/arch/arm64/boot/Image.gz-dtb anykernel3/zImage
-sprunge
-dogbin
-cd anykernel3
-zip -r9 perf-${tanggal}.zip *
+# Compile kernel
+function compile() {
+        make -s -C $(pwd) O=out ${CONFIG}
+        make -s -C $(pwd) CC=${CT} \
+			  CROSS_COMPILE=${GCC_64} \
+                          CROSS_COMPILE_ARM32=${GCC_32} \
+                          O=out ${JOBS} ${LOAD} 2>&1| tee build.log
+        UTS=$(cat out/include/generated/compile.h | grep UTS_VERSION | cut -d '"' -f2)
+            if ! [ -a $IMAGE ]; then
+                finerr
+                exit 1
+            fi
+        cp out/arch/arm64/boot/Image.gz-dtb anykernel3/zImage
+        logerr
+        paste
+}
+# Zipping
+function zipping() {
+    cd ${ZIPNAME} || exit 1
+    zip -r9q ${NAME}-${TYPE}-${CODENAME}-"${TANGGAL}".zip * -x .git README.md
+    cd ... #uwow
+}
+rm -rf out
+sticker
+sendinfo
+sendpriv
+compile
+zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
-curl -F chat_id="${chat_id}" -F document=@"perf-${tanggal}.zip" -F "disable_web_page_preview=true" -F "parse_mode=html" -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>Logs</b> <a href='${HASIL}'>here</a> | ${log} | #riva" https://api.telegram.org/bot${token}/sendDocument
-cd ..
-rm -rf out
-rm -rf anykernel3/zImage
-rm -rf anykernel3/*.zip
+push
