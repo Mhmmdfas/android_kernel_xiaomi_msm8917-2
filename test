@@ -60,7 +60,7 @@ HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
 HEAD_GCC32="non-elf/gcc-10.0.0/arm"
 #CloneToolchains###########################################
 git clone ${JOBS} ${CLANGLINK} -b ${HEAD_CLANG} ${EXTRA} ${FCLANG}
-git clone ${JOBS} ${GCC64} -b ${HEAD_GCC64} ${EXTRA} ${FGCC}
+git clone ${JOBS} ${GCC64} -b ${hhhbi4} ${EXTRA} ${FGCC}
 git clone ${JOBS} ${GCC32} -b ${H} ${EXTRA} ${FARM}
 git clone ${JOBS} ${ZIPLINK} -b ${CODENAME} ${EXTRA} ${ZIPDIR}
 #echo "clone success"
