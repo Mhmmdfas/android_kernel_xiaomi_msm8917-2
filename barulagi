@@ -5,7 +5,6 @@
 # Continues Integration
 #
 
-clear
 echo "#########################################"
 echo "### GREENFORCE Kernel - DRAGON TC Build Script ###"
 echo "#########################################"
@@ -125,7 +124,7 @@ function push() {
 }
 # Push Kernel into my telegram
 function testprivv() {
-        cd ${ZIPDIR}
+        cd ${ZIPNAME}
 	ZIP=$(echo *.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
 			-F chat_id=${DEV_ID} \
@@ -166,17 +165,10 @@ function compile() {
         logerr
         paste
 }
-# Clean My Build
-function cleanbuild() {
-    rm -rf ${ZIPNAME} 
-    rm -rf ${FCLANG}
-    rm -rf ${FGCC}
-    rm -rf ${FARM}
-}
 # Zipping
 function zipping() {
     cd ${ZIPNAME} || exit 1
-    zip -r9q ${NAME}-${TYPE}-${CODENAME}-${TANGGAL}.zip * -x .git README.md
+    zip -r9 ${NAME}-${TYPE}-${CODENAME}-${TANGGAL}.zip * -x .git README.md
     cd ...
 }
 rm -rf out
@@ -189,5 +181,4 @@ END=$(date +"%s")
 DIFF=$(($END - $START))
 testprivv
 push
-cleanbuild
 # End build
