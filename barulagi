@@ -110,6 +110,10 @@ function sticker() {
                         -d sticker="${STICKER}" \
                         -d chat_id=${TELEGRAM_ID}
 }
+# Clean Build
+function cleanbuild() {
+	rm -rf out ${ZIPNAME}/${NAME}* ${ZIPNAME}/zImage
+}
 # Send status
 function sendinfo() {
         curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
@@ -194,4 +198,5 @@ END=$(date +"%s")
 DIFF=$(($END - $START))
 testprivv
 push
+cleanbuild
 # End build
