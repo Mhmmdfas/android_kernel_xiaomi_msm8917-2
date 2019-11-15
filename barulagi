@@ -27,6 +27,7 @@ echo "L"
 #Main Environment
 NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
 TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
+TIME="$(TZ=Asia/Jakarta date)"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 DEV="https://t.me/Mhmmdfas"
 STICKER="CAADBQADPwEAAn1Cwy4LGnCzWtePdRYE"
@@ -34,11 +35,18 @@ NAME="GREENFORCE"
 MACHINE="Circle CI/CD"
 DEVICES="Xiaomi Redmi 4A/5A"
 CODENAME="rolex"
-OS="8.1-9.0 (oreo-pie)"
+OS="8.1-10.0 (Experimental)"
 CONFIG="rolex_defconfig"
 TYPE="CAF"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT="$(git log --pretty=format:'"%h : %s"' -1)"
+
+#Emoji sur!
+ME="😎"
+PHONE="📱"
+CLOCK="⏰"
+LINK="🖇️"
+COMMIT_ICON="📑"
 
 #Toolchains Option
 ZIPNAME="anykernel3"
@@ -102,7 +110,7 @@ function sendinfo() {
                         -d chat_id=${chat_id} \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>${NAME} kernel new build is up</b>!!%0AStarted on <code>${MACHINE}</code> %0AFor devices: <code>${DEVICES}</code> %0AFor Android: <code>${OS}</code> %0AFrom branch: <code>${BRANCH}</code> %0ALatest Commit <code>${COMMIT}</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC_64}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC_32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>"
+                        -d text="<b>${NAME} ${TYPE} kernel new build is up</b>!!%0AStarted on <code>${MACHINE}</code> %0AFor devices: <code>${DEVICES}</code> %0AFor Android: <code>${OS}</code> %0AFrom branch: <code>${BRANCH}</code> %0ALatest Commit <code>${COMMIT}</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC_64}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC_32}gcc --version | head -n 1)</code>%0AStarted on: <code>${TIME}</code>"
 }
 # Send private status
 function sendpriv() {
@@ -110,7 +118,7 @@ function sendpriv() {
                         -d chat_id=${DEV_ID} \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="${NAME} new build for ${CODENAME}!%0A😎: <a href='${DEV}'>Mhmmdfas</a> %0A⏰: <code>$(TZ=Asia/Jakarta date)</code> %0A📑: <code>${COMMIT}</code> %0A🖇️: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
+                        -d text="${NAME} new build for ${CODENAME}!%0A${ME}: <a href='${DEV}'>Mhmmdfas</a> %0A${CLOCK}: <code>${TIME}</code> %0A${COMMIT_ICON}: <code>${COMMIT}</code> %0A${LINK}: <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
 }
 # Push Kernel
 function push() {
@@ -146,7 +154,7 @@ function finerr() {
             -d chat_id=${DEV_ID} \
 			-d "disable_web_page_preview=true" \
             -d "parse_mode=markdown" \
-            -d text=" BUILD DONE WITH ERROR(S).%0A📱: Xiaomi Redmi 4A %0A🖇️: ${LOGERR}%0AOK! GOOD LUCK 😁"
+            -d text=" BUILD DONE WITH ERROR(S).%0A${PHONE}: Xiaomi Redmi 4A %0A${LINK}: ${LOGERR}%0AOK! GOOD LUCK 😁"
         exit 1
 }
 # Compile kernel
@@ -169,7 +177,7 @@ function compile() {
 function zipping() {
     cd ${ZIPNAME} || exit 1
     zip -r9 ${NAME}-${TYPE}-${CODENAME}-${TANGGAL}.zip * -x .git README.md
-    cd ...
+    cd
 }
 rm -rf out
 sticker
