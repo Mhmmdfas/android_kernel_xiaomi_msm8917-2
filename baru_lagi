@@ -47,10 +47,10 @@ EXTRA="--depth=1"
 
 #Material's of GREENFORCE kernel
 ZIPLINK="https://github.com/Mhmmdfas/anykernel3"
-CLANGLINK="https://github.com/NusantaraDevs/DragonTC"
+CLANGLINK="https://github.com/Nicklas373/aosp-clang"
 GCC64="https://github.com/najahiiii/priv-toolchains"
 GCC32="https://github.com/najahiiii/priv-toolchains"
-HEAD_CLANG="daily/10.0 "
+HEAD_CLANG="r370808"
 HEAD_GCC64="non-elf/gcc-10.0.0/arm64"
 HEAD_GCC32="non-elf/gcc-10.0.0/arm"
 
@@ -73,8 +73,8 @@ GCC_32="$(pwd)/${FARM}/bin/${TC_GCC32}"
 #Export Side
 DEV_ID="784548477"
 export ARCH=arm64
-export KBUILD_BUILD_USER=Mhmmdfas
-export KBUILD_BUILD_HOST=Greenforce-HMP
+export KBUILD_BUILD_USER=SteelHeart
+export KBUILD_BUILD_HOST=Reborn
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 START=$(date +"%s")
