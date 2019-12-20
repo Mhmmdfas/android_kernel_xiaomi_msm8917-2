@@ -5,17 +5,17 @@ jobs:
       - image: mhmmdfas/mydockerimage:latest
     steps:
       - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b staging --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2/oreo-pie/barulagi
-      - run: chmod +x barulagi
-      - run: bash barulagi
+      - run: wget https://raw.githubusercontent.com/Mhmmdfas/scripts/master/new/rolex
+      - run: chmod +x rolex
+      - run: bash rolex
   compiletoo:
     docker:
       - image: mhmmdfas/mydockerimage:latest
     steps:
       - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b staging --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2/oreo-pie/baru_lagi
-      - run: chmod +x baru_lagi
-      - run: bash baru_lagi
+      - run: wget https://raw.githubusercontent.com/Mhmmdfas/scripts/master/new/riva
+      - run: chmod +x riva
+      - run: bash riva
 workflows:
   version: 2.1
   cooking:
