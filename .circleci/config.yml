@@ -5,9 +5,9 @@ jobs:
       - image: mhmmdfas/mydockerimage:latest
     steps:
       - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b staging --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/scripts/master/new/rolex
-      - run: chmod +x rolex
-      - run: bash rolex
+      - run: wget https://raw.githubusercontent.com/Mhmmdfas/scripts-1/noob/paralel/rolex.sh
+      - run: chmod +x rolex.sh
+      - run: bash rolex.sh
   compiletoo:
     docker:
       - image: mhmmdfas/mydockerimage:latest
