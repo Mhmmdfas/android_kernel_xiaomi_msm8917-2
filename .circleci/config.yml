@@ -1,24 +1,8 @@
-version: 2.1
+version: 2
 jobs:
-  compile:
+  build:
     docker:
-      - image: mhmmdfas/mydockerimage:latest
+      - image: fadlyas/kernel_dockerfile:latest
     steps:
-      - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b oreo-pie --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2/oreo-pie/barulagi
-      - run: chmod +x barulagi
-      - run: bash barulagi
-  compiletoo:
-    docker:
-      - image: mhmmdfas/mydockerimage:latest
-    steps:
-      - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b oreo-pie --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2/oreo-pie/baru_lagi
-      - run: chmod +x baru_lagi
-      - run: bash baru_lagi
-workflows:
-  version: 2.1
-  cooking:
-    jobs:
-      - compile
-      - compiletoo
+      - checkout
+      - run: bash ./build.sh
