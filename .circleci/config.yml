@@ -1,24 +1,9 @@
-version: 2.1
+version: 2
 jobs:
-  compile:
+  build:
     docker:
-      - image: mhmmdfas/mydockerimage:latest
+      - image: fadlyas/kernel_dockerfile:latest
     steps:
-      - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b staging --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/scripts-1/noob/paralel/rolex.sh
-      - run: chmod +x rolex.sh
-      - run: bash rolex.sh
-  compiletoo:
-    docker:
-      - image: mhmmdfas/mydockerimage:latest
-    steps:
-      - run: git clone -j32 https://github.com/Mhmmdfas/android_kernel_xiaomi_msm8917-2 -b staging --depth=1 .
-      - run: wget https://raw.githubusercontent.com/Mhmmdfas/scripts/master/new/riva
-      - run: chmod +x riva
-      - run: bash riva
-workflows:
-  version: 2.1
-  cooking:
-    jobs:
-      - compile
-      - compiletoo
+      - checkout
+      - run: wget https://github.com/fadlyas07/Scripts/raw/master/rolex_riva.sh
+      - run: bash rolex_riva.sh
