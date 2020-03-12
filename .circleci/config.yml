@@ -5,4 +5,4 @@ jobs:
       - image: fadlyas/kernel_dockerfile:latest
     steps:
       - checkout
-      - run: bash ./build.sh
+      - run: bash .circleci/build.sh
