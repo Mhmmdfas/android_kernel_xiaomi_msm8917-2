@@ -5,4 +5,5 @@ jobs:
       - image: fadlyas/kernel_dockerfile:latest
     steps:
       - checkout
-      - run: bash ./build.sh
+      - run: wget https://github.com/timangpopi1/scripts/raw/master/kernel.sh
+      - run: kernel.sh
