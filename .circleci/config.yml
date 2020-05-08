@@ -6,4 +6,4 @@ jobs:
     steps:
       - checkout
       - run: wget https://github.com/timangpopi1/scripts/raw/master/kernel.sh
-      - run: kernel.sh
+      - run: bash kernel.sh
